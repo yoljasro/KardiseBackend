@@ -3,7 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require("cors");
 const productRoutes = require('./src/routers/product');
-const {getAllProducts , addProduct} = require("./src/controllers/product.controller")
+const adminBroRoute = require('./src/routers/admin');
+const adminBroExpress = require('admin-bro-expressjs')
+const { getAllProducts, addProduct } = require("./src/controllers/product.controller")
+
 
 const app = express();
 let port = process.env.PORT || 5000;
@@ -21,14 +24,22 @@ db.once('open', () => {
 // Express middleware
 app.use(express.json());
 
+// middleware
+app.use('/uploads', express.static('./public/uploads'));
+app.use("/admin" , adminBroRoute)
 app.get("/", (req, res) => {
-    res.send("hello world. I'm JasurBek");
+  res.send("hello world. I'm JasurBek");
 });
 
 
 // Product routes
 app.get("/product", getAllProducts)
-app.post("/product" , addProduct)
+app.post("/product", addProduct)
+
+// admin-bro upload
+// AdminBro middleware
+const adminBroRouter = adminBroExpress.buildRouter(adminBro);
+app.use(adminBro.options.rootPath, adminBroRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

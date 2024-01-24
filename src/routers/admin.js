@@ -1,49 +1,45 @@
-// const { default: adminBro } = require("admin-bro");
-const AdminBro = require("admin-bro");
-const AdminBroExpress = require("admin-bro-expressjs");
-const AdminBroMongoose = require("admin-bro-mongoose");
-// mongoose
-const mongoose = require("mongoose");
-// models
-const User = require("../models/user")
+const AdminBro = require('admin-bro');
+const AdminBroMongoose = require('@admin-bro/mongoose');
+const { buildRouter } = require('admin-bro-expressjs');
+const express = require('express');
+const path = require('path');
+
+const Product = require('../models/product');
 
 AdminBro.registerAdapter(AdminBroMongoose);
 
-const adminBro = new AdminBro({
-    branding: {
-        companyName: "Uzbekistan Tech Service"
+const adminBroOptions = {
+  resources: [
+    {
+      resource: Product,
+      options: {
+        properties: {
+          // Rasmlarni saqlash uchun yordamchi funksiya
+          image: {
+            isVisible: { edit: false, show: true, list: true, filter: true },
+          },
+        },
+        actions: {
+          // Rasmlarni yuklash uchun middleware qo'shish
+          new: {
+            after: async (response, request, context) => {
+              if (request.method === 'post' && context.record.params.image) {
+                const imageDestination = path.join(__dirname, '../public/uploads', context.record.id().toString());
+                const image = context.record.params.image;
+                const extension = image.name.split('.').pop();
+                const imageName = `${context.record.id().toString()}.${extension}`;
+                await image.move(imageDestination, { name: imageName });
+                context.record.update({ image: imageName });
+              }
+              return response;
+            },
+          },
+        },
+      },
     },
-    databases: [mongoose],
-    rootPath: "/admin",
-    resources: [
-        {
-            resource: User,
-            options: {
-                parent: {
-                    name: "UTS clients",
-                    icon: "fas fa-request",
-                },
-            }
-        }
-    ]
-})
-  
-// admin panel settings
-const ADMIN = {
-    email: process.env.ADMIN_EMAIL || "saidaliyevjasur450@gmail.com",
-    password: process.env.ADMIN_PASSWORD || "yoljasron1221Jas",
-  };
-  
-  const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-    cookieName: process.env.ADMIN_COOKIE_NAME || "worldhalal",
-    cookiePassword: process.env.ADMIN_COOKIE_PASS || "worldhalal1221",
-    authenticate: async (email, password) => {
-      if (email === ADMIN.email && password === ADMIN.password) {
-        return ADMIN;
-      }
-      return null;
-    },
-  });
-  
-  module.exports = router;
+  ],
+};
 
+const adminBro = new AdminBro(adminBroOptions);
+
+module.exports = adminBro;

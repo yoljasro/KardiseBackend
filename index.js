@@ -1,46 +1,43 @@
-// src/app.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require("cors");
-const productRoutes = require('./src/routers/product');
-const adminBroRoute = require('./src/routers/admin');
-const adminBroExpress = require('admin-bro-expressjs')
-const { getAllProducts, addProduct } = require("./src/controllers/product.controller")
-
-
+const express = require("express");
 const app = express();
-let port = process.env.PORT || 5000;
+// const swaggerJSDOC = require("swagger-jsdoc");
+// const swaggerUi = require("swagger-ui-express");
+const cors = require("cors");
+const path = require("path");
+const mongoose = require("mongoose");
+const { json } = require("body-parser");
+const adminRouter = require("./src/routers/admin");
+const multer = require("multer");
+let port = 5000;
+//controller
+const { getAllProducts, addProduct } = require("./src/controllers/product.controller") 
+
+app.use(cors());
+app.use(json());
+app.use("/admin", adminRouter);
+app.use('/uploads', express.static('./src/public/uploads'));
+
+// mongodb connect
+const uri = "mongodb+srv://saidaliyevjasur450:e2vxdfq0ZpZBINMU@kardiseproject.rbqdzor.mongodb.net";
+async function connect() {
+  try {
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Connected to MongoDB");
+  } catch (error) { 
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
+connect();
 
 
-// MongoDB-ga ulanish
-mongoose.connect('mongodb+srv://saidaliyevjasur450:e2vxdfq0ZpZBINMU@kardiseproject.rbqdzor.mongodb.net', { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'Mongoose connect error:'));
-db.once('open', () => {
-  console.log('Mongodb connected');
-});
-
-// Express middleware
-app.use(express.json());
-
-// middleware
-app.use('/uploads', express.static('./public/uploads'));
-app.use("/admin" , adminBroRoute)
 app.get("/", (req, res) => {
   res.send("hello world. I'm JasurBek");
 });
-
 
 // Product routes
 app.get("/product", getAllProducts)
 app.post("/product", addProduct)
 
-// admin-bro upload
-// AdminBro middleware
-const adminBroRouter = adminBroExpress.buildRouter(adminBro);
-app.use(adminBro.options.rootPath, adminBroRouter);
-
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Example app is listening on port http://localhost:${port}`);
 });

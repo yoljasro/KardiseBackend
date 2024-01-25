@@ -1,45 +1,74 @@
-const AdminBro = require('admin-bro');
-const AdminBroMongoose = require('@admin-bro/mongoose');
-const { buildRouter } = require('admin-bro-expressjs');
 const express = require('express');
+const AdminBroExpress = require('admin-bro-expressjs');
+const AdminBro = require('admin-bro');
+const AdminBroMongoose = require('admin-bro-mongoose');
+const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs').promises;
+const MyUploadComponent = require('../my-upload-component');
 
-const Product = require('../models/product');
 
 AdminBro.registerAdapter(AdminBroMongoose);
 
-const adminBroOptions = {
+const Product = require('../models/product');
+
+const adminBro = new AdminBro({
+  databases: [mongoose],
+  rootPath: '/admin',
   resources: [
     {
       resource: Product,
       options: {
-        properties: {
-          // Rasmlarni saqlash uchun yordamchi funksiya
-          image: {
-            isVisible: { edit: false, show: true, list: true, filter: true },
-          },
+        parent: {
+          name: 'Product test',
+          icon: 'fas fa-request',
         },
-        actions: {
-          // Rasmlarni yuklash uchun middleware qo'shish
-          new: {
-            after: async (response, request, context) => {
-              if (request.method === 'post' && context.record.params.image) {
-                const imageDestination = path.join(__dirname, '../public/uploads', context.record.id().toString());
-                const image = context.record.params.image;
-                const extension = image.name.split('.').pop();
-                const imageName = `${context.record.id().toString()}.${extension}`;
-                await image.move(imageDestination, { name: imageName });
-                context.record.update({ image: imageName });
-              }
-              return response;
+        properties: {
+          // Avvalgi ma'lumotlar
+          name: { type: 'string' },
+          price: { type: 'number' },
+          // Yangi maydon
+          image: {
+            type: 'upload',
+            isVisible: { list: false, show: true, edit: true, filter: true },
+            components: {
+              edit: AdminBro.bundle(MyUploadComponent),
+            },
+            custom: {
+              fileFn: async (request, { record, file }) => {
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                  throw new Error('Rasm hajmi chegaralangan: 5MB dan kam bo\'lishi kerak');
+                }
+
+                const filePath = path.join(__dirname, '../public/uploads', file.name);
+                await fs.rename(file.path, filePath);
+
+                record.params.image = `/uploads/${file.name}`;
+                await record.save();
+              },
             },
           },
         },
       },
     },
   ],
-};
+});
 
-const adminBro = new AdminBro(adminBroOptions);
+const adminRouter = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+  cookieName: process.env.ADMIN_COOKIE_NAME || 'worldhalal',
+  cookiePassword: process.env.ADMIN_COOKIE_PASS || 'worldhalal1221',
+  authenticate: async (email, password) => {
+    const ADMIN = {
+      email: process.env.ADMIN_EMAIL || '1',
+      password: process.env.ADMIN_PASSWORD || '1',
+    };
 
-module.exports = adminBro;
+    if (email === ADMIN.email && password === ADMIN.password) {
+      return ADMIN;
+    }
+    return null;
+  },
+});
+
+module.exports = adminRouter;

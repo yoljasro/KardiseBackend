@@ -1,6 +1,7 @@
 const express = require('express');
 const { default: AdminBro } = require('admin-bro');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const options = require('./admin.options');
 const buildAdminRouter = require('./admin.router');
 const Company = require('./companies/company.entity');
@@ -8,7 +9,10 @@ const Company = require('./companies/company.entity');
 const app = express();
 const port = 5000;
 //controllers 
-const { getCompany, addCompany } = require("./controllers/company.controller")
+const { createCompany, getAllCompanies } = require("./controllers/company.controller")
+
+app.use(cors());
+
 
 const run = async () => {
   await mongoose.connect('mongodb+srv://saidaliyevjasur450:e2vxdfq0ZpZBINMU@kardiseproject.rbqdzor.mongodb.net', {
@@ -30,8 +34,8 @@ const run = async () => {
   });
 
   // companies
-  app.get("/company", getCompany)
-  app.post("/company", addCompany)
+  app.post("/company", createCompany)
+  app.get("/company", getAllCompanies)
 
 
   app.listen(port, () => console.log(

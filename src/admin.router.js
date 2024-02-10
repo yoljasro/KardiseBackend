@@ -5,8 +5,9 @@ const argon2 = require('argon2');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
+// models
 const { Company } = require('./companies/company.entity');
+const { Project } = require('./models/project')
 
 /**
  * @param {AdminBro} admin
@@ -22,10 +23,17 @@ const buildAdminRouter = (admin) => {
       if (company && await argon2.verify(company.encryptedPassword, password)) {
         return company.toJSON();
       }
+        // Project Model
+
+      // const project = await Project.findOne({ title, description , image });
+      // if (project) {
+      //   return project.toJSON();
+      // }
+
+
       if (email === '1' && password === '1') {
         return {
           email: '1',
-          // Boshqa ma'lumotlarni ham qo'shishingiz mumkin
         };
       }
 

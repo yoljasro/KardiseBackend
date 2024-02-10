@@ -1,15 +1,16 @@
-import React from 'react'
-import { Label, Box, DropZone, BasePropertyProps, DropZoneProps, DropZoneItem } from 'admin-bro'
+// upload-image.edit.js
+import React from 'react';
+import { Label, Box, DropZone, BasePropertyProps, DropZoneProps, DropZoneItem } from 'admin-bro';
 
 const Edit: React.FC<BasePropertyProps> = (props) => {
-  const { property, onChange, record } = props
+  const { property, onChange, record } = props;
 
   const handleDropZoneChange: DropZoneProps['onChange'] = (files) => {
-    onChange(property.name, files[0])
-  }
+    onChange(property.name, files[0]);
+  };
 
-  const uploadedPhoto = record.params.profilePhotoLocation
-  const photoToUpload = record.params[property.name]
+  const uploadedPhoto = record.params.profilePhotoLocation;
+  const photoToUpload = record.params.image;
 
   return (
     <Box marginBottom="xxl">
@@ -19,7 +20,7 @@ const Edit: React.FC<BasePropertyProps> = (props) => {
         <DropZoneItem src={uploadedPhoto} />
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default Edit
+export default Edit;

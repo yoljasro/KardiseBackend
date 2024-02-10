@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const options = require('./admin.options');
 const buildAdminRouter = require('./admin.router');
-const Company = require('./companies/company.entity');
 
 const app = express();
 const port = 5000;
 //controllers 
 const { createCompany, getAllCompanies } = require("./controllers/company.controller")
+const { createProject, getAllProjects } = require("./controllers/project.controller")
 
 app.use(cors());
 
@@ -36,6 +36,9 @@ const run = async () => {
   // companies
   app.post("/company", createCompany)
   app.get("/company", getAllCompanies)
+  // projects
+  app.post("/projects", createProject)
+  app.get("/projects", getAllCompanies)
 
 
   app.listen(port, () => console.log(

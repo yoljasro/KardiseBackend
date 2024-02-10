@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const AdminBro = require('admin-bro');
 
-
 /** @type {AdminBro.After<AdminBro.ActionResponse>} */
 const after = async (response, request, context) => {
   const { record, uploadImage } = context;
@@ -13,7 +12,8 @@ const after = async (response, request, context) => {
 
     await fs.promises.rename(uploadImage.path, filePath);
 
-    await record.update({ profilePhotoLocation: `/${filePath}` });
+    // O'zgartirish: Hamma modellarga mos ravishda rasmni saqlash
+    await record.update({ profilePhotoLocation: `/${filePath}`, image: `/${filePath}` });
   }
   return response;
 };

@@ -7,7 +7,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 // models
 const { Company } = require('./companies/company.entity');
-const { Project } = require('./models/project')
 
 /**
  * @param {AdminBro} admin
@@ -23,12 +22,7 @@ const buildAdminRouter = (admin) => {
       if (company && await argon2.verify(company.encryptedPassword, password)) {
         return company.toJSON();
       }
-        // Project Model
-
-      // const project = await Project.findOne({ title, description , image });
-      // if (project) {
-      //   return project.toJSON();
-      // }
+        
 
 
       if (email === '1' && password === '1') {

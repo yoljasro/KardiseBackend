@@ -5,11 +5,11 @@ AdminBro.registerAdapter(AdminBroMongoose);
 
 // models
 const AdminCompany = require('./companies/company.admin');
-const ProjectCompany = require("./admin/project")
+const CompanyProject = require("./projects/project.admin")
 
 /** @type {import('admin-bro').AdminBroOptions} */
 const options = {
-  resources: [AdminCompany, ProjectCompany],
+  resources: [AdminCompany , CompanyProject],
 };
 
 module.exports = options;

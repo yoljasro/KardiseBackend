@@ -38,7 +38,7 @@ const run = async () => {
   app.get("/company", getAllCompanies)
   // projects
   app.post("/projects", createProject)
-  app.get("/projects", getAllCompanies)
+  app.get("/projects", getAllProjects)
 
 
   app.listen(port, () => console.log(

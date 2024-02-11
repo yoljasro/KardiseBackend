@@ -4,16 +4,15 @@ const AdminBro = require('admin-bro');
 
 /** @type {AdminBro.After<AdminBro.ActionResponse>} */
 const after = async (response, request, context) => {
-  const { record, uploadImage ,image } = context;
+  const { record, image  } = context;
 
-  if (record.isValid() && uploadImage) {
-    const filePath = path.join('uploads', record.id().toString(), uploadImage.name);
+  if (record.isValid() && image) {
+    const filePath = path.join('uploads', record.id().toString(), image.name);
     await fs.promises.mkdir(path.dirname(filePath), { recursive: true });
 
-    await fs.promises.rename(uploadImage.path, filePath);
+    await fs.promises.rename(image.path, filePath);
 
-    // O'zgartirish: Hamma modellarga mos ravishda rasmni saqlash
-    await record.update({ profilePhotoLocation: `/${filePath}`, image: `/${filePath}` });
+    await record.update({ image: `/${filePath}` }); // image nomi Project modelingizga mos ravishda o'zgartirildi
   }
   return response;
 };
@@ -21,10 +20,10 @@ const after = async (response, request, context) => {
 /** @type {AdminBro.Before} */
 const before = async (request, context) => {
   if (request.method === 'post') {
-    const { uploadImage, ...otherParams } = request.payload;
+    const { image, ...otherParams } = request.payload;
 
-    // eslint-disable-next-line no-param-reassign+-
-    context.uploadImage = uploadImage;
+    // eslint-disable-next-line no-param-reassign
+    context.image = image;
 
     return {
       ...request,

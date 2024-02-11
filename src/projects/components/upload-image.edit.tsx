@@ -9,14 +9,13 @@ const Edit: React.FC<BasePropertyProps> = (props) => {
     onChange(property.name, files[0]);
   };
 
-  const uploadedPhoto = record.params.profilePhotoLocation;
-  const photoToUpload = record.params.image;
+  const uploadedPhoto = record.params.image; // Bu qismni yangi modelingizga mos ravishda o'zgartiring
 
   return (
     <Box marginBottom="xxl">
       <Label>{property.label}</Label> 
       <DropZone onChange={handleDropZoneChange}/>
-      {uploadedPhoto && !photoToUpload && (
+      {uploadedPhoto && (
         <DropZoneItem src={uploadedPhoto} />
       )}
     </Box>

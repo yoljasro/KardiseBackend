@@ -10,6 +10,7 @@ const port = 5000;
 //controllers 
 const { createCompany, getAllCompanies } = require("./controllers/company.controller")
 const { createProject, getAllProjects } = require("./controllers/project.controller")
+const {createClient , getAllClients} = require("./controllers/client.controller")
 
 app.use(cors());
 
@@ -39,6 +40,9 @@ const run = async () => {
   // projects
   app.post("/projects", createProject)
   app.get("/projects", getAllProjects)
+  // clients
+  app.post("/clients" , createClient)
+  app.get("/clients" , getAllClients)
 
 
   app.listen(port, () => console.log(

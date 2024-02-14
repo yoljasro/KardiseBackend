@@ -11,6 +11,7 @@ const port = 5000;
 const { createCompany, getAllCompanies } = require("./controllers/company.controller")
 const { createProject, getAllProjects } = require("./controllers/project.controller")
 const {createClient , getAllClients} = require("./controllers/client.controller")
+const {createMotto , getAllMotto} = require("./controllers/motto.controller")
 
 app.use(cors());
 
@@ -43,7 +44,9 @@ const run = async () => {
   // clients
   app.post("/clients" , createClient)
   app.get("/clients" , getAllClients)
-
+  // motto
+  app.post("/motto" , createMotto)
+  app.get("/motto" , getAllMotto)
 
   app.listen(port, () => console.log(
     `Example app listening at http://localhost:${port}`,

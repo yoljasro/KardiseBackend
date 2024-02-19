@@ -12,6 +12,7 @@ const { createCompany, getAllCompanies } = require("./controllers/company.contro
 const { createProject, getAllProjects } = require("./controllers/project.controller")
 const {createClient , getAllClients} = require("./controllers/client.controller")
 const {createMotto , getAllMotto} = require("./controllers/motto.controller")
+const {createProjectLogo  , getAllProjectLogos} = require("./controllers/projectLogo.controller")
 
 app.use(cors());
 
@@ -47,6 +48,9 @@ const run = async () => {
   // motto
   app.post("/motto" , createMotto)
   app.get("/motto" , getAllMotto)
+  // projectLogos
+  app.post("/projectlogos" , createProjectLogo)
+  app.get("/projectlogos" , getAllProjectLogos)
 
   app.listen(port, () => console.log(
     `Example app listening at http://localhost:${port}`,

@@ -7,7 +7,11 @@ import Component3 from '../src/projects/components/upload-image.edit'
 AdminBro.UserComponents.Component3 = Component3
 import Component4 from '../src/projects/components/upload-image.list'
 AdminBro.UserComponents.Component4 = Component4
-import Component5 from '../src/Clients/components/upload-video.edit'
+import Component5 from '../src/ProjectsLogo/components/upload-image.edit'
 AdminBro.UserComponents.Component5 = Component5
-import Component6 from '../src/Clients/components/upload-video.list'
+import Component6 from '../src/ProjectsLogo/components/upload-image.list'
 AdminBro.UserComponents.Component6 = Component6
+import Component7 from '../src/Clients/components/upload-video.edit'
+AdminBro.UserComponents.Component7 = Component7
+import Component8 from '../src/Clients/components/upload-video.list'
+AdminBro.UserComponents.Component8 = Component8

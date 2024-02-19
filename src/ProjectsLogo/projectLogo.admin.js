@@ -1,5 +1,5 @@
 const AdminBro = require('admin-bro');
-const { Project } = require('./project.entity');
+const { ProjectLogo } = require('./projectLogo.entity');
 
 const {
   after: passwordAfterHook,
@@ -14,9 +14,6 @@ const {
 /** @type {AdminBro.ResourceOptions} */
 const options = {
   properties: {
-    // Bu yerda Project modeliga mos ravishda properties qo'shishingiz mumkin
-    title: { type: 'string' },
-    description: { type: 'string' },
     image: {
       components: {
         edit: AdminBro.bundle('./components/upload-image.edit.tsx'),
@@ -53,5 +50,5 @@ const options = {
 
 module.exports = {
   options,
-  resource: Project,
+  resource: ProjectLogo,
 };

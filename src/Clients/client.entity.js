@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const ClientSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
   },
   video: {
     type: String,

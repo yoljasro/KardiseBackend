@@ -18,11 +18,20 @@ app.use(cors());
 
 
 const run = async () => {
-  await mongoose.connect('mongodb+srv://saidaliyevjasur450:e2vxdfq0ZpZBINMU@kardiseproject.rbqdzor.mongodb.net', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-  });
+  try {
+    await mongoose.connect('mongodb+srv://saidaliyevjasur450:e2vxdfq0ZpZBINMU@kardiseproject.rbqdzor.mongodb.net', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    });
+
+    console.log('Connected to MongoDB database');
+
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+  }
+
+
 
   const admin = new AdminBro(options);
   const router = buildAdminRouter(admin);

@@ -9,9 +9,10 @@ const CompanyProject = require("./projects/project.admin")
 const CompanyLogo = require("./ProjectsLogo/projectLogo.admin")
 const CompanyClients = require("./Clients/client.admin")
 const CompanyMotto = require("./Motto/motto.admin")
+const CompanyCommand = require("./Command/command.admin")
 /** @type {import('admin-bro').AdminBroOptions} */
 const options = {
-  resources: [AdminCompany, CompanyProject, CompanyClients, CompanyMotto , CompanyLogo],
+  resources: [AdminCompany, CompanyProject, CompanyClients, CompanyMotto , CompanyLogo , CompanyCommand],
 };
 
 module.exports = options;

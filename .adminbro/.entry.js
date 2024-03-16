@@ -15,3 +15,7 @@ import Component7 from '../src/Clients/components/upload-video.edit'
 AdminBro.UserComponents.Component7 = Component7
 import Component8 from '../src/Clients/components/upload-video.list'
 AdminBro.UserComponents.Component8 = Component8
+import Component9 from '../src/Command/components/upload-image.edit'
+AdminBro.UserComponents.Component9 = Component9
+import Component10 from '../src/Command/components/upload-image.list'
+AdminBro.UserComponents.Component10 = Component10

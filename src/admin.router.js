@@ -15,7 +15,7 @@ const { Company } = require('./companies/company.entity');
 const buildAdminRouter = (admin) => {
   const router = buildAuthenticatedRouter(admin, {
     cookieName: 'admin-bro',
-    cookiePassword: 'superlongandcomplicatedname',
+    cookiePassword: 'superlongandcompl icatednsame',
     authenticate: async (email, password) => {
       const company = await Company.findOne({ email });
 
@@ -25,7 +25,7 @@ const buildAdminRouter = (admin) => {
         
 
 
-      if (email === '1' && password === '1') {
+      if (email === '1 ' && password === '1') {
         return {
           email: '1',
         };

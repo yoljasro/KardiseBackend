@@ -5,7 +5,7 @@ const { Motto } = require('./motto.entity');
 const options = {
   properties: {
     title: { type: 'string' },
-    description: { type: 'string'},
+    description: { type: ' string'},
   },
 };
 
